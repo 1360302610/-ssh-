@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+	<class table="click" name="top.starcup.blog.domain.Click">
+		<id name="id">
+			<generator class="increment"/>
+		</id>
+		<property name="aid" column="aid"></property>
+		<property name="ip" column="ip"></property>
+		<property name="clickTime" column="clickTime"></property>
+	</class>
+</hibernate-mapping>

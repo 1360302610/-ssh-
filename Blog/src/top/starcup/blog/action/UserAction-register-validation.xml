@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+ <!DOCTYPE validators PUBLIC
+  		"-//Apache Struts//XWork Validator 1.0.3//EN"
+  		"http://struts.apache.org/dtds/xwork-validator-1.0.3.dtd">
+
+<validators>
+
+	<field name="username">
+		<field-validator type="requiredstring">
+			<message>账号不能为空</message>
+		</field-validator>
+	</field>
+	<field name="password">
+		<field-validator type="requiredstring">
+			<message>密码不能为空</message>
+		</field-validator>
+		<field-validator type="stringlength">
+			<param name="minLength">6</param>
+			<param name="maxLength">16</param>
+			<message>密码长度必须是${minLength}~${maxLength}位的</message>
+		</field-validator>
+	</field>
+
+	<field name="repwd">
+	<field-validator type="stringlength">
+			<param name="minLength">6</param>
+			<param name="maxLength">16</param>
+			<message>确认密码长度必须是${minLength}~${maxLength}位的</message>
+		</field-validator>
+	</field>
+	<validator type="fieldexpression">
+		<param name="fieldName">repwd</param>
+		<param name="expression"><![CDATA[(repwd==password)]]></param>
+		<message>密码和确认密码必须一致</message>
+	</validator>
+	
+	
+	<field name="nickname">
+		<field-validator type="requiredstring">
+			<message>昵称不能为空</message>
+		</field-validator>
+	</field>
+	<field name="answer">
+		<field-validator type="requiredstring">
+			<message>密码保护的答案不能为空</message>
+		</field-validator>
+	</field>
+
+
+</validators>

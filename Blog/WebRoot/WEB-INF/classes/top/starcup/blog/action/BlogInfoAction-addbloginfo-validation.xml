@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+ <!DOCTYPE validators PUBLIC
+  		"-//Apache Struts//XWork Validator 1.0.3//EN"
+  		"http://struts.apache.org/dtds/xwork-validator-1.0.3.dtd">
+
+<validators>
+	<field name="blogtitle">
+		<field-validator type="requiredstring">
+			<message>博客标题不能为空</message>
+		</field-validator>
+		<field-validator type="stringlength">
+			<param name="minLength">4</param>
+			<param name="maxLength">20</param>
+			<message>标题长度必须是%{minLength}-${maxLength}位的</message>
+		</field-validator>
+	</field>
+
+	<field name="idiograph">
+		<field-validator type="requiredstring">
+			<message>个性签名不能为空</message>
+		</field-validator>
+		<field-validator type="stringlength">
+			<param name="minLength">4</param>
+			<param name="maxLength">20</param>
+			<message>签名长度必须是%{minLength}-${maxLength}位的</message>
+		</field-validator>
+	</field>
+	
+	
+	
+</validators>

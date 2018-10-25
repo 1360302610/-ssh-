@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+	<class table="article" name="top.starcup.blog.domain.Article">
+		<id name="id">
+			<generator class="increment"/>
+		</id>
+		<property name="title" column="title"></property>
+		<property name="content" column="content"></property>
+		<property name="nickname" column="nickname"></property>
+		<property name="date" column="date"></property>
+		<property name="clickNum" column="clicknum"></property>
+		<property name="commentNum" column="commentnum"></property>
+	</class>
+</hibernate-mapping>

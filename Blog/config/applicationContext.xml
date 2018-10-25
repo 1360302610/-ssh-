@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="
+		http://www.springframework.org/schema/beans 
+		http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/tx 
+		http://www.springframework.org/schema/tx/spring-tx.xsd
+		http://www.springframework.org/schema/aop 
+		http://www.springframework.org/schema/aop/spring-aop.xsd
+		http://www.springframework.org/schema/context 
+		http://www.springframework.org/schema/context/spring-context.xsd">
+
+
+	<!-- 1 加载属性文件 -->
+	<context:property-placeholder location="classpath:db.properties"/>
+	
+	<!-- 2 配置数据源 -->
+	<bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
+		<property name="driverClass" value="${jdbc.driver}"></property>
+		<property name="jdbcUrl" value="${jdbc.url}"></property>
+		<property name="user" value="${jdbc.user}"></property>
+		<property name="password" value="${jdbc.password}"></property>
+	</bean>
+	<!-- 3 配置SessionFactory -->
+   <bean id="sessionFactory" class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">
+   		<!-- 3.1 数据源 -->
+   		<property name="dataSource" ref="dataSource"/>
+   		<!-- 3.2 hibernate其他属性 -->
+   		<property name="hibernateProperties">
+   			<props>
+   				<prop key="hibernate.dialect">org.hibernate.dialect.MySQL5Dialect</prop>
+   				<prop key="hibernate.hbm2ddl.auto">update</prop>
+   				<prop key="hibernate.show_sql">true</prop>
+   				<prop key="hibernate.format_sql">true</prop>
+   				<prop key="hibernate.current_session_context_class">thread</prop>
+   			</props>
+   		</property>
+   		<!-- 3.3 映射文件 -->
+   		<property name="mappingLocations" value="classpath:top/starcup/blog/domain/*.hbm.xml"/>
+   </bean>
+   
+       	<!-- 实例化bean -->
+       	<!-- 用户 -->
+       	<bean id="userDao" class="top.starcup.blog.dao.impl.UserDaoImpl">
+       		<property name="sessionFactory" ref="sessionFactory"/>
+       	</bean>
+       	<bean id="userService" class="top.starcup.blog.service.impl.UserServiceImpl">
+       		<property name="userDao" ref="userDao"/>
+       	</bean>
+       	<bean id="userAction" class="top.starcup.blog.action.UserAction" scope="prototype">
+       		<property name="userService" ref="userService"/>
+       	</bean>
+       	<!-- 博客 -->
+       	<bean id="blogInfoDao" class="top.starcup.blog.dao.impl.BlogInfoDaoImpl">
+       		<property name="sessionFactory" ref="sessionFactory"/>
+       	</bean>
+       	<bean id="blogInfoService" class="top.starcup.blog.service.impl.BlogInfoServiceImpl">
+       		<property name="blogInfoDao" ref="blogInfoDao"></property>
+       	</bean>
+       	<bean id="BlogInfoAction" class="top.starcup.blog.action.BlogInfoAction" scope="prototype">
+       		<property name="blogInfoService" ref="blogInfoService"></property>
+       	</bean>
+       	<!-- 文章 -->
+       	<bean id="articleDao" class="top.starcup.blog.dao.impl.ArticleDaoImpl">
+       		<property name="sessionFactory" ref="sessionFactory"></property>
+       	</bean>
+       	<bean id="articleService" class="top.starcup.blog.service.impl.ArticleServiceImpl">
+       		<property name="articleDao" ref="articleDao"></property>
+       		<property name="commentService" ref="commentService"></property>
+       	</bean>
+       	
+       	<bean id="articleAction" class="top.starcup.blog.action.ArticleAction" scope="prototype">
+       		<property name="articleService" ref="articleService"></property>
+       		<property name="clickService" ref="clickService"></property>
+       	</bean>
+       	<!-- 点击量 -->
+       	<bean id="clickDao" class="top.starcup.blog.dao.impl.ClickDaoImpl">
+       		<property name="sessionFactory" ref="sessionFactory"></property>
+       	</bean>
+       	<bean id="clickService" class="top.starcup.blog.service.impl.ClickServiceImpl">
+       		<property name="clickDao" ref="clickDao"></property>
+       	</bean>
+       	
+       	<!-- 评论 -->
+       	<bean id="commentDao" class="top.starcup.blog.dao.impl.CommentDaoImpl">
+       		<property name="sessionFactory" ref="sessionFactory"/>
+       	</bean>
+       	<bean id="commentService" class="top.starcup.blog.service.impl.CommentServiceImpl">
+       		<property name="commentDao" ref="commentDao"/>
+       	</bean>
+       	<bean id="commentAction" class="top.starcup.blog.action.CommentAction" scope="prototype">
+       		<property name="commentService" ref="commentService"></property>
+       		<property name="articleService" ref="articleService"></property>
+       	</bean>
+       	<!-- 图片 -->
+       	<bean id="photoAction" class="top.starcup.blog.action.PhotoAction" scope="prototype"></bean>
+       	<!-- rss订阅 -->
+       	<bean id="showRssAction" class="top.starcup.blog.action.ShowRssAction" scope="prototype">
+       		<property name="as" ref="articleService"></property>
+       	</bean>
+</beans>
